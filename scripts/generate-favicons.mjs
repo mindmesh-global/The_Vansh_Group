@@ -1,7 +1,10 @@
 /**
  * 1) Knocks out near-white background → transparent (keeps saturated sun + rays).
  * 2) Trims empty edges, writes public/vansh-logo-mark.png for the site.
- * 3) Writes src/app/icon.png + apple-icon.png (alpha-safe, no ImageResponse).
+ * 3) Optional (--icons): writes src/app/icon.png + apple-icon.png from the processed mark.
+ *
+ * `npm install` runs this without --icons so site logo processing does not overwrite app icons.
+ * Run `npm run favicons` when you intentionally want to regenerate icons from the current mark.
  *
  * Source: public/vansh-logo-mark.png (replace that file with a new export when design changes).
  */
@@ -13,6 +16,8 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const root = join(__dirname, "..");
 const markPath = join(root, "public", "vansh-logo-mark.png");
 const appDir = join(root, "src", "app");
+
+const includeIcons = process.argv.includes("--icons");
 
 const ZOOM = 1.72;
 
@@ -83,6 +88,15 @@ async function makeAppIcon(size, filename) {
 }
 
 await processMarkPng();
-await makeAppIcon(512, "icon.png");
-await makeAppIcon(180, "apple-icon.png");
-console.log("Updated public/vansh-logo-mark.png and wrote src/app/icon.png, apple-icon.png");
+
+if (includeIcons) {
+  await makeAppIcon(512, "icon.png");
+  await makeAppIcon(180, "apple-icon.png");
+  console.log(
+    "Updated public/vansh-logo-mark.png and wrote src/app/icon.png, apple-icon.png",
+  );
+} else {
+  console.log(
+    "Updated public/vansh-logo-mark.png (skipped app icons; use npm run favicons to regenerate)",
+  );
+}
