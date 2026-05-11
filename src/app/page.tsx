@@ -1,18 +1,52 @@
 "use client";
 
+import { SiteFooter } from "@/components/SiteFooter";
+import { SiteNav } from "@/components/SiteNav";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
 export default function Home() {
   const rootRef = useRef<HTMLDivElement>(null);
-  const [navScrolled, setNavScrolled] = useState(false);
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
+  const [contactStatus, setContactStatus] = useState<
+    "idle" | "sending" | "sent" | "error"
+  >("idle");
+  const [contactError, setContactError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const onScroll = () => setNavScrolled(window.scrollY > 80);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+  const onContactSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setContactError(null);
+    setContactStatus("sending");
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          firstName,
+          lastName,
+          email,
+          message,
+        }),
+      });
+      const data = (await res.json()) as { error?: string };
+      if (!res.ok) {
+        setContactStatus("error");
+        setContactError(data.error ?? "Something went wrong. Please try again.");
+        return;
+      }
+      setContactStatus("sent");
+      setFirstName("");
+      setLastName("");
+      setEmail("");
+      setMessage("");
+    } catch {
+      setContactStatus("error");
+      setContactError("Network error. Check your connection and try again.");
+    }
+  };
 
   useEffect(() => {
     const root = rootRef.current;
@@ -147,18 +181,14 @@ export default function Home() {
       el.addEventListener("mouseleave", onMagneticLeave);
     });
 
-    const connectBtn = root.querySelector("#connect-btn");
     const exploreBtn = root.querySelector("#explore-btn");
     const storyBtn = root.querySelector("#story-btn");
 
-    const goContact = () =>
-      root.querySelector("#contact")?.scrollIntoView({ behavior: "smooth" });
     const goProducts = () =>
       root.querySelector("#products")?.scrollIntoView({ behavior: "smooth" });
     const goAbout = () =>
       root.querySelector("#about")?.scrollIntoView({ behavior: "smooth" });
 
-    connectBtn?.addEventListener("click", goContact);
     exploreBtn?.addEventListener("click", goProducts);
     storyBtn?.addEventListener("click", goAbout);
 
@@ -188,7 +218,6 @@ export default function Home() {
         if (onMove) el.removeEventListener("mousemove", onMove);
         if (onLeave) el.removeEventListener("mouseleave", onLeave);
       });
-      connectBtn?.removeEventListener("click", goContact);
       exploreBtn?.removeEventListener("click", goProducts);
       storyBtn?.removeEventListener("click", goAbout);
       obs.disconnect();
@@ -203,43 +232,7 @@ export default function Home() {
       <div className="grain" />
       <canvas id="bg-canvas" aria-hidden />
 
-      <nav id="nav" className={navScrolled ? "solid compact" : undefined}>
-        <a href="#" className="nav-logo-wrap" aria-label="The Vansh Group">
-          <span className="nav-mark" aria-hidden="true">
-            <Image
-              src="/vansh-logo-mark.png"
-              alt=""
-              width={224}
-              height={224}
-              className="nav-mark-img"
-              priority
-            />
-          </span>
-          <span className="nav-logo">
-            THE <span>VANSH</span> GROUP
-          </span>
-        </a>
-        <ul className="nav-links">
-          <li>
-            <a href="#about">About</a>
-          </li>
-          <li>
-            <a href="#vision">Vision</a>
-          </li>
-          <li>
-            <a href="#products">Products</a>
-          </li>
-          <li>
-            <a href="#journal">Journal</a>
-          </li>
-          <li>
-            <a href="#contact">Contact</a>
-          </li>
-        </ul>
-        <button type="button" className="nav-btn" id="connect-btn">
-          <span>Connect →</span>
-        </button>
-      </nav>
+      <SiteNav />
 
       <section className="hero" id="home">
         <div className="hero-inner">
@@ -567,15 +560,23 @@ export default function Home() {
             </p>
           </div>
           <div>
-            <div className="c-form reveal d2">
+            <form
+              className="c-form reveal d2"
+              onSubmit={onContactSubmit}
+              onInput={() => {
+                if (contactStatus === "sent") setContactStatus("idle");
+              }}
+            >
               <div className="f-row">
                 <div className="f-group">
                   <label htmlFor="first-name">First Name</label>
                   <input
                     id="first-name"
                     type="text"
-                    placeholder="Aryan"
+                    placeholder="Vansh"
                     autoComplete="given-name"
+                    value={firstName}
+                    onChange={(ev) => setFirstName(ev.target.value)}
                   />
                 </div>
                 <div className="f-group">
@@ -583,8 +584,10 @@ export default function Home() {
                   <input
                     id="last-name"
                     type="text"
-                    placeholder="Sharma"
+                    placeholder="group"
                     autoComplete="family-name"
+                    value={lastName}
+                    onChange={(ev) => setLastName(ev.target.value)}
                   />
                 </div>
               </div>
@@ -593,8 +596,10 @@ export default function Home() {
                 <input
                   id="email"
                   type="email"
-                  placeholder="aryan@company.com"
+                  placeholder="vansh@company.com"
                   autoComplete="email"
+                  value={email}
+                  onChange={(ev) => setEmail(ev.target.value)}
                 />
               </div>
               <div className="f-group">
@@ -603,68 +608,36 @@ export default function Home() {
                   id="message"
                   rows={5}
                   placeholder="Tell us about your vision..."
+                  value={message}
+                  onChange={(ev) => setMessage(ev.target.value)}
+                  required
                 />
               </div>
-              <button type="button" className="f-submit">
-                <span>Send Message →</span>
+              {contactError ? (
+                <p className="f-contact-msg f-contact-msg--err" role="alert">
+                  {contactError}
+                </p>
+              ) : null}
+              {contactStatus === "sent" ? (
+                <p className="f-contact-msg f-contact-msg--ok">
+                  Thank you — your message was sent.
+                </p>
+              ) : null}
+              <button
+                type="submit"
+                className="f-submit"
+                disabled={contactStatus === "sending"}
+              >
+                <span>
+                  {contactStatus === "sending" ? "Sending…" : "Send Message →"}
+                </span>
               </button>
-            </div>
+            </form>
           </div>
         </div>
       </section>
 
-      <footer>
-        <div className="ft-top">
-          <div>
-            <div className="ft-logo">
-              THE <span>VANSH</span> GROUP
-            </div>
-            <p className="ft-tagline">
-              Using technology to solve real-world problems through intelligent
-              products and thoughtful design.
-            </p>
-          </div>
-          <div className="ft-col">
-            <h4>Products</h4>
-            <ul>
-              <li>
-                <a
-                  href="https://www.mindmesh.global/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  MindMesh
-                </a>
-              </li>
-            </ul>
-          </div>
-          <div className="ft-col">
-            <h4>Company</h4>
-            <ul>
-              <li>
-                <a href="#about">About</a>
-              </li>
-              <li>
-                <a href="#journal">Journal</a>
-              </li>
-            </ul>
-          </div>
-          <div className="ft-col">
-            <h4>Legal</h4>
-            <ul>
-              <li>
-                <a href="#">Privacy Policy</a>
-              </li>
-              <li>
-                <a href="#">Terms of Use</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div className="ft-bot">
-          <div className="ft-copy">© 2026 The Vansh Group. All rights reserved.</div>
-        </div>
-      </footer>
+      <SiteFooter />
     </div>
   );
 }

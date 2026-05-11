@@ -16,11 +16,6 @@ export const metadata: Metadata = {
   title: "The Vansh Group",
   description:
     "The Vansh Group is a software company launching premium digital products like MindMesh.",
-  icons: {
-    icon: "/icon.png?v=3",
-    shortcut: "/icon.png?v=3",
-    apple: "/icon.png?v=3",
-  },
 };
 
 export default function RootLayout({
@@ -33,7 +28,9 @@ export default function RootLayout({
       lang="en"
       className={`${dmSans.variable} ${playfair.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        {children}
+      </body>
     </html>
   );
 }
