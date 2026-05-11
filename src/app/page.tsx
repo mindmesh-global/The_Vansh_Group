@@ -1,9 +1,18 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import Image from "next/image";
+import { useEffect, useRef, useState } from "react";
 
 export default function Home() {
   const rootRef = useRef<HTMLDivElement>(null);
+  const [navScrolled, setNavScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setNavScrolled(window.scrollY > 80);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   useEffect(() => {
     const root = rootRef.current;
@@ -11,7 +20,6 @@ export default function Home() {
 
     const dot = root.querySelector<HTMLElement>("#c-dot");
     const ring = root.querySelector<HTMLElement>("#c-ring");
-    const nav = root.querySelector<HTMLElement>("#nav");
     const canvas = root.querySelector<HTMLCanvasElement>("#bg-canvas");
     const pscroll = root.querySelector<HTMLElement>("#pscroll");
     if (!dot || !ring || !canvas || !pscroll) return;
@@ -57,9 +65,6 @@ export default function Home() {
     const onUp = () => document.body.classList.remove("clicking");
     document.addEventListener("mousedown", onDown);
     document.addEventListener("mouseup", onUp);
-
-    const onScroll = () => nav?.classList.toggle("solid", window.scrollY > 80);
-    window.addEventListener("scroll", onScroll);
 
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
@@ -169,7 +174,6 @@ export default function Home() {
       document.removeEventListener("mousemove", onMouseMove);
       document.removeEventListener("mousedown", onDown);
       document.removeEventListener("mouseup", onUp);
-      window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", resize);
       pscroll.removeEventListener("scroll", onProductsScroll);
       hoverTargets.forEach((el) => {
@@ -199,12 +203,17 @@ export default function Home() {
       <div className="grain" />
       <canvas id="bg-canvas" aria-hidden />
 
-      <nav id="nav">
+      <nav id="nav" className={navScrolled ? "solid compact" : undefined}>
         <a href="#" className="nav-logo-wrap" aria-label="The Vansh Group">
-          <span className="nav-sunrise" aria-hidden="true">
-            <span className="sun-core" />
-            <span className="sun-glow" />
-            <span className="sun-horizon" />
+          <span className="nav-mark" aria-hidden="true">
+            <Image
+              src="/vansh-logo-mark.png"
+              alt=""
+              width={224}
+              height={224}
+              className="nav-mark-img"
+              priority
+            />
           </span>
           <span className="nav-logo">
             THE <span>VANSH</span> GROUP
@@ -215,16 +224,13 @@ export default function Home() {
             <a href="#about">About</a>
           </li>
           <li>
-            <a href="#manifesto">Purpose</a>
+            <a href="#vision">Vision</a>
           </li>
           <li>
             <a href="#products">Products</a>
           </li>
           <li>
-            <a href="#team">Team</a>
-          </li>
-          <li>
-            <a href="#blog">Blog</a>
+            <a href="#journal">Journal</a>
           </li>
           <li>
             <a href="#contact">Contact</a>
@@ -238,21 +244,22 @@ export default function Home() {
       <section className="hero" id="home">
         <div className="hero-inner">
           <h1 className="hero-h1">
-            <span className="hero-line">Where</span>
-            <span className="hero-line">Intelligence</span>
-            <span className="hero-line">Meets Design</span>
+            <span className="hero-line">Where Intelligence</span>
+            <span className="hero-line">Becomes Products</span>
+            <span className="hero-line">for Everyday Life</span>
           </h1>
           <p className="hero-sub">
-            We build intelligent technology that solves real-world problems —
-            blending AI, design, and engineering into products that create
-            meaningful impact.
+            At The Vansh Group, we create intelligent software products designed
+            to solve real-world problems through AI, modern engineering, and
+            thoughtful design.
           </p>
+
           <div className="hero-ctas">
             <button type="button" className="cta-primary" id="explore-btn">
               <span>Explore Products</span>
             </button>
             <button type="button" className="cta-sec" id="story-btn">
-              Our Story
+              Our Vision
             </button>
           </div>
         </div>
@@ -261,13 +268,38 @@ export default function Home() {
       <div className="marquee-wrap">
         <div className="marquee-track">
           <div className="marquee-item">
-            <span>✦</span> Real-World Impact
+            <span>✦</span> AI-Native Products
           </div>
           <div className="marquee-item">
-            <span>✦</span> Premium Software
+            <span>✦</span> Built for the Future
           </div>
           <div className="marquee-item">
-            <span>✦</span> AI Products
+            <span>✦</span> Intelligent Systems
+          </div>
+          <div className="marquee-item">
+            <span>✦</span> MindMesh
+          </div>
+
+          <div className="marquee-item">
+            <span>✦</span> Innovation First
+          </div>
+
+          <div className="marquee-item">
+            <span>✦</span> Modern Software
+          </div>
+
+          <div className="marquee-item">
+            <span>✦</span> The Vansh Group
+          </div>
+
+          <div className="marquee-item">
+            <span>✦</span> AI-Native Products
+          </div>
+          <div className="marquee-item">
+            <span>✦</span> Built for the Future
+          </div>
+          <div className="marquee-item">
+            <span>✦</span> Intelligent Systems
           </div>
           <div className="marquee-item">
             <span>✦</span> MindMesh
@@ -277,36 +309,6 @@ export default function Home() {
           </div>
           <div className="marquee-item">
             <span>✦</span> The Vansh Group
-          </div>
-          <div className="marquee-item">
-            <span>✦</span> Building Tomorrow
-          </div>
-          <div className="marquee-item">
-            <span>✦</span> India · Global
-          </div>
-          <div className="marquee-item">
-            <span>✦</span> Real-World Impact
-          </div>
-          <div className="marquee-item">
-            <span>✦</span> Premium Software
-          </div>
-          <div className="marquee-item">
-            <span>✦</span> AI Products
-          </div>
-          <div className="marquee-item">
-            <span>✦</span> MindMesh
-          </div>
-          <div className="marquee-item">
-            <span>✦</span> Innovation First
-          </div>
-          <div className="marquee-item">
-            <span>✦</span> The Vansh Group
-          </div>
-          <div className="marquee-item">
-            <span>✦</span> Building Tomorrow
-          </div>
-          <div className="marquee-item">
-            <span>✦</span> India · Global
           </div>
         </div>
       </div>
@@ -314,86 +316,86 @@ export default function Home() {
       <section className="about" id="about">
         <div className="about-grid">
           <div className="about-left">
-            <div className="section-tag reveal">About the Group</div>
+            <div className="section-tag reveal">About Section</div>
             <h2 className="s-title reveal d1">
-              We Don&apos;t Just
+              We Build Technology
               <br />
-              Build Software.
+              With Purpose.
               <br />
-              <em>We Build Legacy.</em>
+              <em>For Real-World Problems.</em>
             </h2>
             <p className="about-text reveal d2">
-              Our philosophy is simple: technology should solve meaningful
-              problems, not create unnecessary complexity.
+              The Vansh Group is a product-focused technology company creating
+              original digital platforms and intelligent software experiences.
               <br />
               <br />
-              Every product we build is designed to be intelligent, scalable,
-              and deeply useful in the real world.
+              Every product we build is designed with long-term thinking —
+              combining simplicity, performance, and modern technology into
+              tools that solve meaningful real-world problems.
             </p>
             <p className="about-text reveal d3">
-              From AI-native platforms to modern digital infrastructure, The
-              Vansh Group focuses on creating software that delivers clarity,
-              performance, and long-term impact.
+              Our goal is to create products that feel effortless to use while
+              delivering clarity, usefulness, and innovation at scale.
             </p>
             <div className="about-nums reveal d2">
               <div className="num-block">
-                <div className="nb-num">2+</div>
-                <div className="nb-label">Products Shipped</div>
+                <div className="nb-num">01</div>
+                <div className="nb-label">Product Launched</div>
+              </div>
+              <div className="num-block">
+                <div className="nb-num">MindMesh</div>
+                <div className="nb-label">Product</div>
+              </div>
+              <div className="num-block">
+                <div className="nb-num">2025</div>
+                <div className="nb-label">Founded</div>
               </div>
               <div className="num-block">
                 <div className="nb-num">∞</div>
-                <div className="nb-label">Vision Horizon</div>
-              </div>
-              <div className="num-block">
-                <div className="nb-num">100%</div>
-                <div className="nb-label">Client Obsessed</div>
-              </div>
-              <div className="num-block">
-                <div className="nb-num">24/7</div>
-                <div className="nb-label">Always Building</div>
+                <div className="nb-label">Problems Worth Solving</div>
               </div>
             </div>
           </div>
           <div className="about-right reveal d2">
             <div className="about-img-wrap">
               <div className="ai-box1">
-                <div className="ai-box1-letter">V</div>
+                <Image
+                  src="/vansh-logo-mark.png"
+                  alt=""
+                  width={480}
+                  height={480}
+                  className="ai-box1-mark"
+                />
               </div>
               <div className="ai-box2">
                 <div className="ai-box2-quote">
-                  &quot;The best technology is the kind that dissolves a real
-                  problem — then gets out of the way.&quot;
+                  &quot;Using technology to solve real world problems.&quot;
                 </div>
                 <div className="ai-box2-attr">— The Vansh Group</div>
-              </div>
-              <div className="ai-box3">
-                <div className="ai-box3-num">01</div>
-                <div className="ai-box3-txt">
-                  Est.
-                  <br />
-                  2024
-                </div>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      <section className="manifesto" id="manifesto">
+      <section className="manifesto" id="vision">
         <div className="manifesto-inner">
-          <div className="section-tag reveal manifesto-tag">Philosophy</div>
+          <div className="section-tag reveal manifesto-tag">Philosophy Section</div>
           <h2 className="s-title reveal d1 manifesto-title">
-            Built With <em>Purpose</em>
+            Built for the <em>Future</em>
           </h2>
           <p className="manifesto-text reveal d2">
-            We believe technology should feel invisible — powerful enough to
-            solve difficult problems, yet simple enough to disappear into
-            everyday life.
+            We believe technology should remove complexity, not create it.
           </p>
           <p className="manifesto-text reveal d3">
-            At The Vansh Group, we focus on creating software that is
-            intelligent, human-centered, and built to leave a meaningful impact
-            on the world.
+            That philosophy shapes every product we design — intelligent systems
+            built with clarity, usability, and human-centered experiences at
+            their core.
+          </p>
+          <p className="manifesto-text reveal d3">
+            From AI-native platforms to modern digital ecosystems, The Vansh
+            Group focuses on building products designed to evolve with the
+            future.
           </p>
         </div>
       </section>
@@ -401,30 +403,34 @@ export default function Home() {
       <section className="products" id="products">
         <div className="products-head">
           <div>
-            <div className="section-tag reveal">Our Products</div>
+            <div className="section-tag reveal">Products Section</div>
             <h2 className="s-title reveal d1" style={{ marginBottom: 0 }}>
-              What We&apos;ve <em>Launched</em>
+              What We&apos;ve <em>Built</em>
             </h2>
           </div>
-          <button
-            type="button"
-            className="cta-sec reveal"
-            style={{ alignSelf: "flex-end" }}
-          >
-            View All →
-          </button>
         </div>
         <div className="products-scroll" id="pscroll">
           <div className="products-row">
             <div className="p-card reveal">
+              <a
+                className="p-card-link"
+                href="https://www.mindmesh.global/"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="MindMesh — open mindmesh.global"
+              >
+                <span className="sr-only">MindMesh</span>
+              </a>
               <div className="p-num">01</div>
               <div className="p-card-top">
-                <div className="p-label">AI Platform · Live</div>
+                <div className="p-label">Click to visit site</div>
                 <div className="p-name">MindMesh</div>
                 <p className="p-desc">
-                  MindMesh is an AI-native collaboration platform designed to
-                  connect ideas, workflows, and teams through intelligent
-                  orchestration and modern productivity systems.
+                  MindMesh is an AI-powered desktop workspace that connects your emails,
+                  calendar, and personal memory into one intelligent productivity system.
+
+                  Built for modern workflows, MindMesh helps you organize communication,
+
                 </p>
               </div>
               <div className="p-card-bot">
@@ -434,77 +440,19 @@ export default function Home() {
                 </div>
               </div>
             </div>
-            <div className="p-card reveal d1">
+            <div className="p-card p-card-coming">
               <div className="p-num">02</div>
               <div className="p-card-top">
-                <div className="p-label">Stealth · 2025</div>
-                <div className="p-name">Project Orion</div>
-                <p className="p-desc">
-                  Our next flagship platform is currently in stealth development
-                  — built to redefine how technology interacts with one of the
-                  world&apos;s largest industries.
-                </p>
-              </div>
-              <div className="p-card-bot">
-                <div className="p-status">
-                  <div className="p-status-dot soon" />
-                  In Development
-                </div>
-              </div>
-            </div>
-            <div className="p-card reveal d2">
-              <div className="p-num">03</div>
-              <div className="p-card-top">
-                <div className="p-label">Partnership</div>
-                <div className="p-name">Build With Us</div>
-                <p className="p-desc">
-                  Have a vision that deserves world-class engineering? Partner
-                  with The Vansh Group to bring extraordinary ideas to life.
-                </p>
-              </div>
-              <div className="p-card-bot">
-                <div className="p-status">
-                  <div
-                    className="p-status-dot soon"
-                    style={{
-                      background: "var(--gold2)",
-                      boxShadow: "0 0 8px var(--gold2)",
-                    }}
-                  />
-                  Open for Partners
-                </div>
-              </div>
-            </div>
-            <div className="p-card reveal d3">
-              <div className="p-num">04</div>
-              <div className="p-card-top">
-                <div className="p-label">Coming 2026</div>
-                <div className="p-name">Horizon Labs</div>
-                <p className="p-desc">
-                  Our internal R&amp;D division exploring AI, spatial computing,
-                  and next-gen human-computer interaction.
-                </p>
-              </div>
-              <div className="p-card-bot">
-                <div className="p-status">
-                  <div
-                    className="p-status-dot"
-                    style={{ background: "var(--muted)", boxShadow: "none" }}
-                  />
-                  Research Phase
-                </div>
+                <div className="p-name p-name-coming">Coming Soon</div>
               </div>
             </div>
           </div>
         </div>
         <div className="p-scroll-hint reveal">
-          <span>Scroll to explore</span>
           <div className="p-scroll-line" />
           <div className="p-scroll-dots">
             <div className="sd active" data-dot="0" />
             <div className="sd" data-dot="1" />
-            <div className="sd" data-dot="2" />
-            <div className="sd" data-dot="3" />
           </div>
         </div>
       </section>
@@ -517,10 +465,10 @@ export default function Home() {
                 <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
               </svg>
             </div>
-            <div className="fs-title">Speed First</div>
+            <div className="fs-title">Product First</div>
             <p className="fs-text">
-              We move fast with precision — shipping intentionally, never
-              carelessly.
+              We create original software products built with long-term vision
+              and purpose.
             </p>
           </div>
           <div className="fs-item">
@@ -529,10 +477,10 @@ export default function Home() {
                 <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
               </svg>
             </div>
-            <div className="fs-title">Enterprise Grade</div>
+            <div className="fs-title">AI Native</div>
             <p className="fs-text">
-              Reliability, scalability, and security are foundational to every
-              system we design.
+              Intelligence is integrated from the foundation of every
+              experience.
             </p>
           </div>
           <div className="fs-item">
@@ -542,9 +490,9 @@ export default function Home() {
                 <path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14" />
               </svg>
             </div>
-            <div className="fs-title">AI Native</div>
+            <div className="fs-title">Design Driven</div>
             <p className="fs-text">
-              Intelligence is embedded from the beginning, not added later.
+              Clean, modern, and thoughtful interfaces crafted for humans.
             </p>
           </div>
           <div className="fs-item">
@@ -553,74 +501,18 @@ export default function Home() {
                 <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
               </svg>
             </div>
-            <div className="fs-title">Human Centered</div>
+            <div className="fs-title">Built to Evolve</div>
             <p className="fs-text">
-              Every experience is crafted for clarity, usefulness, and delight.
+              Our products are designed to continuously improve and grow over
+              time.
             </p>
           </div>
         </div>
       </div>
 
-      <section className="team" id="team">
-        <div className="team-hd">
-          <div>
-            <div className="section-tag reveal">The People</div>
-            <h2 className="s-title reveal d1" style={{ marginBottom: 0 }}>
-              Minds Behind
-              <br />
-              the <em>Vision</em>
-            </h2>
-            <p className="team-lead reveal d2">
-              Builders, designers, and engineers shaping the future of
-              intelligent software.
-            </p>
-          </div>
-          <button
-            type="button"
-            className="cta-sec reveal"
-            style={{ alignSelf: "flex-end" }}
-          >
-            Full Team →
-          </button>
-        </div>
-        <div className="team-grid">
-          <div className="t-card reveal">
-            <div className="t-photo">
-              <div className="t-monogram">V</div>
-              <div className="t-info">
-                <div className="t-name">Vansh</div>
-                <div className="t-role">Founder &amp; CEO</div>
-              </div>
-            </div>
-          </div>
-          <div className="t-card reveal d1">
-            <div className="t-photo">
-              <div className="t-monogram">A</div>
-              <div className="t-info">
-                <div className="t-name">Add Member</div>
-                <div className="t-role">Chief Technology Officer</div>
-              </div>
-            </div>
-          </div>
-          <div className="t-card reveal d2">
-            <div className="t-photo">
-              <div className="t-monogram">D</div>
-              <div className="t-info">
-                <div className="t-name">Add Member</div>
-                <div className="t-role">Head of Design</div>
-              </div>
-            </div>
-          </div>
-          <div className="t-card t-card-join reveal d3">
-            <div className="t-join-icon">+</div>
-            <span className="t-join-text">We&apos;re Hiring</span>
-          </div>
-        </div>
-      </section>
-
-      <section className="blog" id="blog">
+      <section className="blog" id="journal">
         <div className="blog-hd">
-          <div className="section-tag reveal blog-tag">Journal</div>
+          <div className="section-tag reveal blog-tag">Journal Section</div>
           <h2 className="s-title reveal d1">
             Insights, Ideas &amp; <em>Updates</em>
           </h2>
@@ -628,29 +520,30 @@ export default function Home() {
         <div className="blog-grid">
           <div className="b-card reveal">
             <div className="b-body">
-              <div className="b-cat">Product Update · April 2025</div>
+              <div className="b-cat">Product Update · 2026</div>
               <div className="b-title">
-                Introducing MindMesh 2.0 — The Future of AI-Native Collaboration
+                Inside MindMesh — Building the Future of Intelligent
+                Productivity
               </div>
               <div className="b-excerpt">
-                We rebuilt MindMesh from the ground up with a new neural engine
-                that understands context, intent, and workflow patterns.
+                A closer look at how MindMesh is being designed to simplify
+                communication, workflows, and digital organization.
               </div>
             </div>
           </div>
           <div className="b-card b-sm reveal d1">
             <div className="b-body">
-              <div className="b-cat">Thought Leadership · March 2025</div>
+              <div className="b-cat">Technology · 2026</div>
               <div className="b-title">
-                Why Most Software Companies Are Building The Wrong Thing
+                Why Simplicity Will Define The Next Generation of Software
               </div>
             </div>
           </div>
           <div className="b-card b-sm reveal d2">
             <div className="b-body">
-              <div className="b-cat">Company · Feb 2025</div>
+              <div className="b-cat">Vision · 2026</div>
               <div className="b-title">
-                The Vansh Group&apos;s Decade Vision: Software With a Soul
+                The Vansh Group&apos;s Approach to AI-Native Product Design
               </div>
             </div>
           </div>
@@ -662,16 +555,15 @@ export default function Home() {
           <div>
             <div className="section-tag reveal">Get in Touch</div>
             <h2 className="s-title reveal d1">
-              Let&apos;s Build
+              Let&apos;s Shape
               <br />
-              <em>Something</em>
+              The Future
               <br />
-              Extraordinary.
+              <em>of Technology.</em>
             </h2>
             <p className="contact-lead reveal d2">
-              Whether you&apos;re building a product, exploring AI, or solving a
-              difficult problem — we&apos;d love to hear what you&apos;re
-              working on.
+              We&apos;re continuously exploring new ideas, intelligent systems,
+              and future-focused digital experiences.
             </p>
           </div>
           <div>
@@ -728,21 +620,21 @@ export default function Home() {
               THE <span>VANSH</span> GROUP
             </div>
             <p className="ft-tagline">
-              Technology in service of real problems—crafted with precision,
-              launched with purpose.
+              Using technology to solve real-world problems through intelligent
+              products and thoughtful design.
             </p>
           </div>
           <div className="ft-col">
             <h4>Products</h4>
             <ul>
               <li>
-                <a href="#">MindMesh</a>
-              </li>
-              <li>
-                <a href="#">Project Orion</a>
-              </li>
-              <li>
-                <a href="#">Horizon Labs</a>
+                <a
+                  href="https://www.mindmesh.global/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  MindMesh
+                </a>
               </li>
             </ul>
           </div>
@@ -750,13 +642,10 @@ export default function Home() {
             <h4>Company</h4>
             <ul>
               <li>
-                <a href="#">About</a>
+                <a href="#about">About</a>
               </li>
               <li>
-                <a href="#">Team</a>
-              </li>
-              <li>
-                <a href="#">Blog</a>
+                <a href="#journal">Journal</a>
               </li>
             </ul>
           </div>
@@ -774,11 +663,6 @@ export default function Home() {
         </div>
         <div className="ft-bot">
           <div className="ft-copy">© 2026 The Vansh Group. All rights reserved.</div>
-          <div className="socials">
-            <div className="soc">in</div>
-            <div className="soc">x</div>
-            <div className="soc">ig</div>
-          </div>
         </div>
       </footer>
     </div>
