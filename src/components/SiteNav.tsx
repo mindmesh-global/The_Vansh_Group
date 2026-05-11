@@ -21,8 +21,9 @@ export function SiteNav() {
           <Image
             src="/vansh-logo-mark.png"
             alt=""
-            width={224}
-            height={224}
+            width={168}
+            height={168}
+            sizes="168px"
             className="nav-mark-img"
             priority
           />
