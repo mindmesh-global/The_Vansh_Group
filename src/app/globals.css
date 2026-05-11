@@ -137,11 +137,14 @@ section{position:relative;z-index:2}
 .nb-num{font-family:var(--ff-serif);font-size:52px;font-weight:400;color:var(--gold);line-height:1;margin-bottom:8px}
 .nb-label{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted)}
 .about-right{position:relative}
-.about-img-wrap{position:relative;height:580px}
-.ai-box1{position:absolute;top:0;right:0;width:82%;height:72%;border:1px solid var(--border);background:transparent;display:flex;align-items:center;justify-content:center;overflow:hidden}
-.ai-box1::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 30% 60%,rgba(200,169,110,0.08),transparent 60%)}
-.ai-box1-mark{width:min(78%,400px)!important;height:auto!important;max-height:min(48vh,400px);object-fit:contain;display:block;opacity:.9;animation:float3d 8s ease-in-out infinite;pointer-events:none;user-select:none}
-.ai-box2{position:absolute;bottom:0;left:0;width:58%;height:46%;background:var(--gold);display:flex;flex-direction:column;justify-content:center;padding:36px}
+/* isolation + explicit z-index: stable stacking on prod (no vh-based logo jump) */
+.about-img-wrap{position:relative;height:580px;width:100%;isolation:isolate}
+.ai-box1{position:absolute;top:0;right:0;width:82%;height:72%;border:1px solid var(--border);background:transparent;display:flex;align-items:center;justify-content:center;overflow:hidden;z-index:1;min-width:0}
+.ai-box1::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 30% 60%,rgba(200,169,110,0.08),transparent 60%);z-index:0}
+/* Next/Image wraps the img in a span — fill the flex cell so centering matches every build */
+.ai-box1 > span{display:flex!important;align-items:center;justify-content:center;width:100%;height:100%;max-width:100%;max-height:100%;min-width:0;min-height:0;box-sizing:border-box}
+.ai-box1-mark{width:min(78%,400px)!important;height:auto!important;max-height:min(400px,88%)!important;object-fit:contain;display:block;opacity:.9;animation:float3d 8s ease-in-out infinite;pointer-events:none;user-select:none;position:relative;z-index:1}
+.ai-box2{position:absolute;bottom:0;left:0;width:58%;height:46%;background:var(--gold);display:flex;flex-direction:column;justify-content:center;padding:36px;z-index:2;box-sizing:border-box;min-width:0}
 .ai-box2-quote{font-family:var(--ff-serif);font-size:16px;font-style:italic;color:var(--dark);line-height:1.6;margin-bottom:16px}
 .ai-box2-attr{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:rgba(4,5,10,0.6)}
 .ai-box3{position:absolute;top:30px;left:-20px;width:120px;height:120px;border:1px solid var(--border);background:var(--dark2);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:4px;z-index:2}
@@ -291,6 +294,7 @@ footer{position:relative;z-index:2;background:var(--dark2);padding:80px 70px 44p
   .about,.contact,.team,.blog,.manifesto,footer,.feature-strip{padding:90px 20px}
   .products-head,.products-scroll,.p-scroll-hint{padding-left:20px;padding-right:20px}
   .about-grid,.contact-grid,.f-row,.team-grid,.blog-grid,.ft-top,.fs-inner{grid-template-columns:1fr;gap:32px}
+  .about-img-wrap{height:clamp(480px,86vw,580px)}
   .p-card{width:min(88vw,420px)}
 }
 

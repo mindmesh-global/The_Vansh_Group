@@ -357,6 +357,7 @@ export default function Home() {
                   alt=""
                   width={480}
                   height={480}
+                  sizes="(max-width: 1024px) min(90vw, 520px), min(42vw, 520px)"
                   className="ai-box1-mark"
                 />
               </div>
