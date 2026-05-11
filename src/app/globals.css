@@ -92,8 +92,8 @@ nav.compact .nav-logo-wrap{gap:0}
 .nav-btn span{position:relative;z-index:1;transition:color .4s}
 .nav-btn:hover span{color:var(--dark)}
 
-.hero{position:relative;z-index:2;height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden;padding-top:clamp(36px,5vh,88px)}
-.hero-inner{text-align:center;position:relative}
+.hero{position:relative;z-index:2;height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden;padding-top:clamp(52px,9vh,130px)}
+.hero-inner{text-align:center;position:relative;margin-top:clamp(12px,2.5vh,40px)}
 .hero-badge{display:inline-flex;align-items:center;gap:10px;border:1px solid var(--border);padding:8px 20px;margin-bottom:52px;opacity:0;animation:fadeUp .8s .4s forwards}
 .hero-badge-dot{width:6px;height:6px;background:var(--gold);border-radius:50%;animation:pulse 2s infinite}
 .hero-badge-text{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold)}
