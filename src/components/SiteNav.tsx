@@ -18,17 +18,17 @@ export function SiteNav() {
     <nav id="nav" className={navScrolled ? "solid compact" : undefined}>
       <Link href="/" className="nav-logo-wrap" aria-label="The Vansh Group">
         <span
-          className="nav-mark-slot relative flex size-[60px] shrink-0 items-center justify-center overflow-hidden max-lg:size-[48px] max-[480px]:size-[44px]"
+          className="nav-mark-slot relative flex size-[92px] shrink-0 items-center justify-center overflow-hidden max-lg:size-[70px] max-[480px]:size-[64px]"
           aria-hidden="true"
         >
-          <span className="relative flex size-[135px] shrink-0 origin-center scale-[calc(60/135)] items-center justify-center max-lg:scale-[calc(48/135)] max-[480px]:scale-[calc(44/135)]">
+          <span className="relative flex size-[135px] shrink-0 origin-center scale-[calc(92/135)] items-center justify-center max-lg:scale-[calc(70/135)] max-[480px]:scale-[calc(64/135)]">
             <Image
               src="/vansh-logo-mark.png"
               alt=""
               width={500}
               height={500}
-              sizes="(max-width: 480px) 44px, (max-width: 1024px) 48px, 60px"
-              className="nav-mark-img relative h-auto w-[45%] shrink-0 object-contain"
+              sizes="(max-width: 480px) 64px, (max-width: 1024px) 70px, 92px"
+              className="nav-mark-img relative h-auto w-[54%] shrink-0 object-contain"
               priority
             />
           </span>
