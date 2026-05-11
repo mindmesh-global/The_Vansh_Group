@@ -2,7 +2,6 @@
 
 import { SiteFooter } from "@/components/SiteFooter";
 import { SiteNav } from "@/components/SiteNav";
-import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
 export default function Home() {
@@ -352,12 +351,12 @@ export default function Home() {
           <div className="about-right reveal d2">
             <div className="about-img-wrap">
               <div className="ai-box1">
-                <Image
+                <img
                   src="/vansh-logo-mark.png"
                   alt=""
                   width={480}
                   height={480}
-                  sizes="(max-width: 1024px) min(90vw, 520px), min(42vw, 520px)"
+                  decoding="async"
                   className="ai-box1-mark"
                 />
               </div>
