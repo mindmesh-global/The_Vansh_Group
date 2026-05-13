@@ -2,6 +2,7 @@
 
 import { SiteFooter } from "@/components/SiteFooter";
 import { SiteNav } from "@/components/SiteNav";
+import { trackEvent } from "@/lib/gtag";
 import { useEffect, useRef, useState } from "react";
 
 export function HomePageClient() {
@@ -36,6 +37,10 @@ export function HomePageClient() {
         setContactError(data.error ?? "Something went wrong. Please try again.");
         return;
       }
+      trackEvent("contact_submit", {
+        button_text: "Send Message →",
+        keyword: "homepage_contact_form",
+      });
       setContactStatus("sent");
       setFirstName("");
       setLastName("");
@@ -411,6 +416,13 @@ export function HomePageClient() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="MindMesh — open mindmesh.global"
+                onClick={() =>
+                  trackEvent("mindmesh_click", {
+                    destination_url: "https://www.mindmesh.global/",
+                    button_text: "MindMesh",
+                    keyword: "homepage_product_card",
+                  })
+                }
               >
                 <span className="sr-only">MindMesh</span>
               </a>

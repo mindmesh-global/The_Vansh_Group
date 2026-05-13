@@ -1,5 +1,6 @@
 "use client";
 
+import { trackEvent } from "@/lib/gtag";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -137,7 +138,14 @@ export function SiteNav() {
         <Link
           href="/#contact"
           className="nav-mobile-cta"
-          onClick={closeMobileMenu}
+          onClick={() => {
+            trackEvent("connect_click", {
+              button_text: "Connect →",
+              destination_url: "/#contact",
+              keyword: "nav_mobile_drawer",
+            });
+            closeMobileMenu();
+          }}
         >
           Connect →
         </Link>
@@ -208,6 +216,11 @@ export function SiteNav() {
             className="nav-btn"
             tabIndex={mobileOpen ? -1 : undefined}
             onClick={() => {
+              trackEvent("connect_click", {
+                button_text: "Connect →",
+                destination_url: "/#contact",
+                keyword: "nav_desktop",
+              });
               if (mobileOpen) closeMobileMenu();
             }}
           >

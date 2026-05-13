@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { LegalDocShell } from "@/components/LegalDocShell";
+import { MindMeshExternalLink } from "@/components/MindMeshExternalLink";
 
 const pageTitle = "Terms of Use";
 const pageDescription = "Terms governing your use of The Vansh Group website.";
@@ -52,9 +53,7 @@ export default function TermsOfUsePage() {
       <h2>Links & other products</h2>
       <p>
         We may link to services such as{" "}
-        <a href="https://www.mindmesh.global/" target="_blank" rel="noopener noreferrer">
-          MindMesh
-        </a>
+        <MindMeshExternalLink keyword="terms_of_use">MindMesh</MindMeshExternalLink>
         . Those services have their own terms. We are not responsible for third-party sites or
         content.
       </p>

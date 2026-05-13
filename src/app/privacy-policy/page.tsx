@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { LegalDocShell } from "@/components/LegalDocShell";
+import { MindMeshExternalLink } from "@/components/MindMeshExternalLink";
 
 const pageTitle = "Privacy Policy";
 const pageDescription =
@@ -65,9 +66,7 @@ export default function PrivacyPolicyPage() {
         We may share data with trusted service providers (e.g. hosting, email) who help us
         operate the site, when the law requires it, or in a merger or sale of assets. Products
         like{" "}
-        <a href="https://www.mindmesh.global/" target="_blank" rel="noopener noreferrer">
-          MindMesh
-        </a>{" "}
+        <MindMeshExternalLink keyword="privacy_policy">MindMesh</MindMeshExternalLink>{" "}
         have their own policies when you use them there.
       </p>
 

@@ -1,3 +1,6 @@
+"use client";
+
+import { trackEvent } from "@/lib/gtag";
 import Link from "next/link";
 
 const LINKEDIN_URL =
@@ -25,6 +28,13 @@ export function SiteFooter() {
                 href="https://www.mindmesh.global/"
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() =>
+                  trackEvent("mindmesh_click", {
+                    destination_url: "https://www.mindmesh.global/",
+                    button_text: "MindMesh",
+                    keyword: "footer_products",
+                  })
+                }
               >
                 MindMesh
               </a>
@@ -63,6 +73,13 @@ export function SiteFooter() {
             target="_blank"
             rel="noopener noreferrer"
             aria-label="The Vansh Group on LinkedIn"
+            onClick={() =>
+              trackEvent("linkedin_click", {
+                destination_url: LINKEDIN_URL,
+                button_text: "LinkedIn",
+                keyword: "footer_social",
+              })
+            }
           >
             <svg
               width={18}
