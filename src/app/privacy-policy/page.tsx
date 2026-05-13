@@ -1,10 +1,30 @@
 import type { Metadata } from "next";
 import { LegalDocShell } from "@/components/LegalDocShell";
 
+const pageTitle = "Privacy Policy";
+const pageDescription =
+  "How The Vansh Group collects, uses, and protects your information when you use our website.";
+
 export const metadata: Metadata = {
-  title: "Privacy Policy | The Vansh Group",
-  description:
-    "How The Vansh Group collects, uses, and protects your information when you use our website.",
+  title: pageTitle,
+  description: pageDescription,
+  alternates: {
+    canonical: "/privacy-policy",
+  },
+  openGraph: {
+    type: "article",
+    url: "/privacy-policy",
+    title: `${pageTitle} | The Vansh Group`,
+    description: pageDescription,
+    siteName: "The Vansh Group",
+    images: [{ url: "/vansh-logo-mark.png", width: 1200, height: 630, alt: "The Vansh Group" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `${pageTitle} | The Vansh Group`,
+    description: pageDescription,
+    images: ["/vansh-logo-mark.png"],
+  },
 };
 
 export default function PrivacyPolicyPage() {
