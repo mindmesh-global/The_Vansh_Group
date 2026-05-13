@@ -5,6 +5,9 @@ import { SiteNav } from "@/components/SiteNav";
 import { trackEvent } from "@/lib/gtag";
 import { useEffect, useRef, useState } from "react";
 
+const SUPPORT_EMAIL =
+  process.env.NEXT_PUBLIC_SUPPORT_EMAIL?.trim() || "Admin@thevanshgroup.com";
+
 export function HomePageClient() {
   const rootRef = useRef<HTMLDivElement>(null);
   const [firstName, setFirstName] = useState("");
@@ -570,6 +573,20 @@ export function HomePageClient() {
               We&apos;re continuously exploring new ideas, intelligent systems,
               and future-focused digital experiences.
             </p>
+            <a
+              className="contact-email reveal d3"
+              href={`mailto:${SUPPORT_EMAIL}`}
+              onClick={() =>
+                trackEvent("support_email_click", {
+                  destination_url: `mailto:${SUPPORT_EMAIL}`,
+                  button_text: SUPPORT_EMAIL,
+                  keyword: "homepage_contact_section",
+                })
+              }
+              aria-label={`Email ${SUPPORT_EMAIL}`}
+            >
+              {SUPPORT_EMAIL}
+            </a>
           </div>
           <div>
             <form

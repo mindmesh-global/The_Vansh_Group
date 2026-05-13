@@ -189,7 +189,13 @@ export function SiteNav() {
             aria-label={mobileOpen ? "Close menu" : "Open menu"}
             aria-expanded={mobileOpen}
             aria-controls={menuPanelId}
-            onClick={() => (mobileOpen ? closeMobileMenu() : openMobileMenu())}
+            onClick={() => {
+              trackEvent("hamburger_click", {
+                button_text: mobileOpen ? "Close menu" : "Open menu",
+                keyword: mobileOpen ? "nav_hamburger_close" : "nav_hamburger_open",
+              });
+              mobileOpen ? closeMobileMenu() : openMobileMenu();
+            }}
             onKeyDown={(e) => {
               if (!mobileOpen || !panelRef.current) return;
               if (e.key !== "Tab") return;

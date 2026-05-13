@@ -7,6 +7,9 @@ const LINKEDIN_URL =
   process.env.NEXT_PUBLIC_LINKEDIN_URL?.trim() ||
   "https://www.linkedin.com/company/the-vansh-group/";
 
+const SUPPORT_EMAIL =
+  process.env.NEXT_PUBLIC_SUPPORT_EMAIL?.trim() || "Admin@thevanshgroup.com";
+
 export function SiteFooter() {
   return (
     <footer>
@@ -66,6 +69,34 @@ export function SiteFooter() {
       </div>
       <div className="ft-bot">
         <div className="ft-copy">© 2026 The Vansh Group. All rights reserved.</div>
+        <a
+          className="ft-email"
+          href={`mailto:${SUPPORT_EMAIL}`}
+          onClick={() =>
+            trackEvent("support_email_click", {
+              destination_url: `mailto:${SUPPORT_EMAIL}`,
+              button_text: SUPPORT_EMAIL,
+              keyword: "footer_support",
+            })
+          }
+          aria-label={`Email support at ${SUPPORT_EMAIL}`}
+        >
+          <svg
+            width={13}
+            height={13}
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={1.8}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden
+          >
+            <rect x="3" y="5" width="18" height="14" rx="2" />
+            <path d="m3 7 9 6 9-6" />
+          </svg>
+          <span>{SUPPORT_EMAIL}</span>
+        </a>
         <div className="socials">
           <a
             className="soc"
